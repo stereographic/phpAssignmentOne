@@ -1,18 +1,57 @@
 <?php
-    // parse ini for database connection information
-    $config = parse_ini_file('config.ini'); 
-    // database connection information
-	$db_name = $config['DB_DATABASE'];
-    $table_name = $config['DB_TABLE'];
-    
+    // prevents people from directly hitting the page
+	if (($_POST['username'] == "") || ($_POST['password'] == "")){
+		header("Location: login.html");
+		exit;
+    }
+    // parsing database info & connecting to database 
+	$config = parse_ini_file('config.ini'); 
+    $db_name = $config['DB_DATABASE'];    
+    $contact = $config['DB_TABLE'];
+    $login = $config['DB_TABLELOGIN'];
+
+    // ------------------------------------------------------------------------- database connection
+	$connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") 
+         or die(mysql_error());
+
+    $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());
+
+    // ------------------------------------------------------------------------- user verification
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // getting salted hash
+    $stmt = $connection->prepare("SELECT ukey FROM $login WHERE user=?");
+    $stmt->bind_param("s",$username);
+    $stmt->execute();
+    $stmt->bind_result($ukey);
+    $stmt->fetch();
+    $stmt->close();
+
+    // generating new users debugging
+    // echo password_hash('321',1);
+    //user1 = 123
+    //user2 = 321
+
+    // verifying login info
+    if (password_verify($password,$ukey)) {
+        session_start();
+        $_SESSION['user'] = $username;
+    } else {
+        echo 'Password Rejected';
+        header("Location: login.html");
+		exit;
+    }
+
+    // ------------------------------------------------------------------------- displaying contact data
     $display_block = "";
     // connecting to the database
     //$connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) or die(mysqli_error($connection));
-    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") or die(mysqli_error($connection));
-    // reference to database
-    $db = @mysqli_select_db($connection, $db_name) or die(mysqli_error($connection));
+    // $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") or die(mysqli_error($connection));
+    // // reference to database
+    // $db = @mysqli_select_db($connection, $db_name) or die(mysqli_error($connection));
     
-    $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday FROM $table_name ORDER BY id";
+    $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday, user FROM $contact WHERE user='$username'";
 
     $result = @mysqli_query($connection, $sql) or die(mysqli_error($connection));
     
@@ -33,7 +72,10 @@
             $birthday = "[unknown]";
         }
         $display_block .= "<tr><td>$fullname</td> <td>$phone</td> <td>$email</td> <td>$address</td> <td>$city</td> <td>$province</td> <td>$postal</td> <td>$birthday</td></tr>";
-	}
+    }
+    // ------------------------------------------------------------------------- closing database connection
+    $connection->close();
+
 ?>
 <!DOCTYPE html>
 <html>
