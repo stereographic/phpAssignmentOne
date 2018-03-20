@@ -30,6 +30,7 @@
 
     // generating new users debugging
     // echo password_hash('321',1);
+    // ------------------------------------------------------------------------- testing user login info
     //user1 = 123
     //user2 = 321
 
