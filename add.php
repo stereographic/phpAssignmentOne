@@ -31,6 +31,9 @@
         $stmt->bind_param("ssssssssss",$firstName,$lastName,$phone,$email,$address,$city,$province,$postal,$birthday,$username);
         $stmt->execute();
         $stmt->close();
+
+        $display_block = "Client Contact Information: Addition Success";
+
         
     }    
     $connection->close();
@@ -41,6 +44,9 @@
 		<title>Client Contact Editing</title>
 	</head>
     <body>    
+        <?php if($_SERVER['REQUEST_METHOD'] === 'POST'){ echo $display_block; }?>
+    
+
         <form action="" method="post">
             <label for='fName'>First Name
             </br>

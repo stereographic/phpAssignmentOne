@@ -15,6 +15,28 @@
 
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());
 
+    $display_block = "";
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){ 
+        $id = $_POST['id'];
+        $firstName = $_POST['fName'];
+        $lastName = $_POST['lName'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $address = $_POST['address'];
+        $city = $_POST['city'];
+        $province = $_POST['province'];
+        $postal = $_POST['postal'];
+        $birthday = $_POST['birthday'];
+
+        $stmt = $connection->prepare("UPDATE $contact SET firstName=?, lastName=?, phone=?, email=?, address=?, city=?, province=?, postal=?, birthday=? WHERE id=?");
+        $stmt->bind_param("sssssssssi", $firstName, $lastName, $phone, $email, $address, $city, $province, $postal, $birthday, $id);
+        $stmt->execute();
+        $stmt->close();
+
+        $display_block .= "<h3>Client Contact Information: Modification Success</h3>";
+    }
+
     $id = $_GET['id'];
     $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday, user FROM $contact WHERE id='$id'";
     
@@ -32,8 +54,8 @@
     $postal = $row['postal'];
     $birthday = $row['birthday'];
 
-    $display_block = 
-    "<form action='editSubmit.php'>
+    $display_block .= 
+    "<form action='' method='post'>
     <input type='hidden' name='id' value='$id'>
 
     <label for='fName'>First Name
