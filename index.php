@@ -1,48 +1,49 @@
 <?php
-    // prevents people from directly hitting the page
-	if (($_POST['username'] == "") || ($_POST['password'] == "")){
-		header("Location: login.html");
-		exit;
-    }
+    session_start();
     // parsing database info & connecting to database 
 	$config = parse_ini_file('config.ini'); 
     $db_name = $config['DB_DATABASE'];    
     $contact = $config['DB_TABLE'];
     $login = $config['DB_TABLELOGIN'];
-
+    
     // ------------------------------------------------------------------------- database connection
-	$connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") 
-         or die(mysql_error());
-
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") or die(mysql_error());
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());
-
-    // ------------------------------------------------------------------------- user verification
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // getting salted hash
-    $stmt = $connection->prepare("SELECT ukey FROM $login WHERE user=?");
-    $stmt->bind_param("s",$username);
-    $stmt->execute();
-    $stmt->bind_result($ukey);
-    $stmt->fetch();
-    $stmt->close();
-
-    // generating new users debugging
-    // echo password_hash('321',1);
-    //user1 = 123
-    //user2 = 321
-
-    // verifying login info
-    if (password_verify($password,$ukey)) {
-        session_start();
-        $_SESSION['user'] = $username;
-    } else {
-        echo 'Password Rejected';
-        header("Location: login.html");
-		exit;
+    
+    // prevents people from directly hitting the page
+	if (($_SESSION['user'] == "")){
+        if (($_POST['username'] == "") && ($_POST['password'] == "")){
+            header("Location: login.html");
+            exit;
+        } else {
+            // ------------------------------------------------------------------------- user verification
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+        
+            // getting salted hash
+            $stmt = $connection->prepare("SELECT ukey FROM $login WHERE user=?");
+            $stmt->bind_param("s",$username);
+            $stmt->execute();
+            $stmt->bind_result($ukey);
+            $stmt->fetch();
+            $stmt->close();
+        
+            // generating new users debugging
+            // echo password_hash('321',1);
+            //user1 = 123
+            //user2 = 321
+        
+            // verifying login info
+            if (password_verify($password,$ukey)) {
+                $_SESSION['user'] = $username;
+            } else {
+                echo 'Password Rejected';
+                header("Location: login.html");
+                exit;
+            }
+        }
     }
-
+    $username = $_SESSION['user'];
     // ------------------------------------------------------------------------- displaying contact data
     $display_block = "";
     // connecting to the database
@@ -71,7 +72,11 @@
         if ($birthday == "0000-00-00") {
             $birthday = "[unknown]";
         }
-        $display_block .= "<tr><td>$fullname</td> <td>$phone</td> <td>$email</td> <td>$address</td> <td>$city</td> <td>$province</td> <td>$postal</td> <td>$birthday</td></tr>";
+        $display_block .= "<tr>
+            <td>$fullname</td> <td>$phone</td> <td>$email</td> <td>$address</td> <td>$city</td> <td>$province</td> <td>$postal</td> <td>$birthday</td>
+            <td><form action='edit.php' target='_blank' ><input type='hidden' name='id' value='$id'><input type='submit' value='Edit'></form></td>
+            <td><form action='delete.php' target='_blank' ><input type='hidden' name='id' value='$id'><input type='submit' value='Delete'></form></td>
+        </tr>";
     }
     // ------------------------------------------------------------------------- closing database connection
     $connection->close();
@@ -80,10 +85,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Client Contact Information</title>
+        <title><?php echo $_SESSION['user']; ?> Client Contact Information</title>
 	</head>
 	<body>
-		<h1>_______'s Clients</h1>
+		<h1><?php echo $_SESSION['user']; ?>'s Clients</h1>
         <table style="width:100%;">
             <tr>
                 <th>Name</th>
@@ -94,6 +99,8 @@
                 <th>Province</th>
                 <th>Postal</th>
                 <th>Birthday</th>
+                <th>Edit Contact</th>
+                <th>Delete Contact</th>
             </tr>
 		    <?php echo "$display_block"; ?>
         </table>
