@@ -59,8 +59,8 @@
                 <li><a href="add.php" >Add New Customer</a></li>
                 <li><a href="currentBirthdays.php" class="active">Current Months Birthdays</a></li>
                 <li><a href="download.php" >Download Contacts CSV</a></li>
-                <li><a href="download.php" >Upload Contacts CSV</a></li>
-                <li><a href="logout.php" >Logout</a></li>
+                <li><a href="upload.php" >Upload Contacts CSV</a></li>
+                <li class="logout"><a href="logout.php" >Logout</a></li>
             </ul>
             <div class="mainWrapper">
                 <h1><?php echo $_SESSION['user']; ?>'s Clients</h1>

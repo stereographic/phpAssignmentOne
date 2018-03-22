@@ -3,7 +3,7 @@ font-family: 'Fira Sans', sans-serif; */
 html,body {
     margin: 0;
     padding: 0;
-    background-color: #b2bec3;
+    background-color: #8395a7;
 }
 h1 {
     font-family: 'Oswald', sans-serif;
@@ -12,6 +12,7 @@ ul {
     font-family: 'Fira Sans', sans-serif;
     list-style-type: none;
     margin: 0;
+    margin-bottom: 10px;
     padding: 0;
     overflow: hidden;
     background-color: #2d3436;
@@ -43,11 +44,8 @@ li a:hover {
     width:80%;
 
 }
-form {
-    margin-top: 6px;
-}
 input {
-    margin-bottom: 10px;
+
     font-family: 'Fira Sans', sans-serif;
     width: 100%;
     padding: 6px 10px;
@@ -55,7 +53,14 @@ input {
     box-sizing: border-box;
 }
 input[type=submit] {
-    
+    font-size: 14px;
+    background-color: #10ac84;
+    border: none;
+    color: white;
+    padding: 4px 12px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 label {
     font-family: 'Fira Sans', sans-serif;
@@ -63,16 +68,28 @@ label {
 table {
     width: 100%;
     font-family: 'Fira Sans', sans-serif;
+    border-collapse: collapse;
 }
-
 
 th {
     text-align: left;
 }
 
+tr:nth-child(even) {background-color: #c8d6e5;}
+
 .delete {
     font-size: 14px;
-    background-color: #d63031;
+    background-color: #d63031 !important;
+    border: none;
+    color: white;
+    padding: 4px 12px;
+    text-decoration: none;
+    margin: 4px 4px;
+    cursor: pointer;
+}
+.edit {
+    font-size: 14px;
+    background-color: #ff9f43 !important;
     border: none;
     color: white;
     padding: 4px 12px;
@@ -80,13 +97,6 @@ th {
     margin: 4px 2px;
     cursor: pointer;
 }
-.edit {
-    font-size: 14px;
-    background-color: #ff9f43;
-    border: none;
-    color: white;
-    padding: 4px 12px;
-    text-decoration: none;
-    margin: 4px 2px;
-    cursor: pointer;
+.logout {
+    float: right;
 }
