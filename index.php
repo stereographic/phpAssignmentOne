@@ -92,6 +92,7 @@
         <li><a href="index.php" target="_blank">Home</a></li>
         <li><a href="add.php" target="_blank">Add New Customer</a></li>
         <li><a href="currentBirthdays.php" target="_blank">Current Months Birthdays</a></li>
+        <li><a href="logout.php" target="_blank">Logout</a></li>
     </ul>
 		<h1><?php echo $_SESSION['user']; ?>'s Clients</h1>
         <table style="width:100%;">
