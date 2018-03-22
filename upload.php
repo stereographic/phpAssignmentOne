@@ -13,12 +13,27 @@
         header("Location: login.html");
         exit;
     }
+    $username = $_SESSION['user'];
 
+    if (isset($_POST["import"])) {
+
+        $fileName = $_FILES["file"]["tmp_name"];
+        $file = fopen($fileName, "r");
+        while (($column = fgetcsv($file, ",")) !== FALSE) {
+            $stmt = $connection->prepare("INSERT INTO $contact (firstName, lastName, phone, email, address, city, province, postal, birthday, user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssss",$column[0],$column[1],$column[2],$column[3],$column[4],$column[5],$column[6],$column[7],$column[8],$username);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
+    
+
+    $connection->close();
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
-        <title><?php echo $_SESSION['user']; ?> Client Contact Information</title>
+        <title><?php echo $_SESSION['user']; ?> Client CSV Upload</title>
         <link rel="stylesheet" type="text/css" href="styles/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Oswald" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/r-2.2.1/datatables.min.css"/>
@@ -33,6 +48,12 @@
         <li class="logout"><a href="logout.php" >Logout</a></li>
     </ul>
     <div class="mainWrapper">
+
+    <form action="" method="post" name="uploadCSV" enctype="multipart/form-data">
+        <input type="file" name="file" id="file" accept=".csv">
+        <button type="submit" id="submit" name="import">Import</button>
+    </form>
+
     </div>
 
 </body>
