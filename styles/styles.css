@@ -1,0 +1,92 @@
+/* font-family: 'Oswald', sans-serif;
+font-family: 'Fira Sans', sans-serif; */
+html,body {
+    margin: 0;
+    padding: 0;
+    background-color: #b2bec3;
+}
+h1 {
+    font-family: 'Oswald', sans-serif;
+}
+ul {
+    font-family: 'Fira Sans', sans-serif;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #2d3436;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: #dfe6e9;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+
+.active {
+    background-color: #0984e3;
+}
+
+.mainWrapper {
+    margin: 0 auto;
+    width:80%;
+
+}
+form {
+    margin-top: 6px;
+}
+input {
+    margin-bottom: 10px;
+    font-family: 'Fira Sans', sans-serif;
+    width: 100%;
+    padding: 6px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+input[type=submit] {
+    
+}
+label {
+    font-family: 'Fira Sans', sans-serif;
+}
+table {
+    width: 100%;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+
+th {
+    text-align: left;
+}
+
+.delete {
+    font-size: 14px;
+    background-color: #d63031;
+    border: none;
+    color: white;
+    padding: 4px 12px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.edit {
+    font-size: 14px;
+    background-color: #ff9f43;
+    border: none;
+    color: white;
+    padding: 4px 12px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}

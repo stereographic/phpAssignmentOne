@@ -49,25 +49,34 @@
 <html>
 	<head>
         <title><?php echo $_SESSION['user']; ?> Client Contact Information</title>
+        <link rel="stylesheet" type="text/css" href="styles/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Oswald" rel="stylesheet">
 	</head>
 	<body>
-    <ul>
-        <li><a href="add.php" target="_blank">Add New Customer</a></li>
-        <li><a href="currentBirthdays.php" target="_blank">Current Months Birthdays</a></li>
-    </ul>
-		<h1><?php echo $_SESSION['user']; ?>'s Clients</h1>
-        <table style="width:100%;">
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>Province</th>
-                <th>Postal</th>
-                <th>Birthday</th>
-            </tr>
-		    <?php echo "$display_block"; ?>
-        </table>
+        
+            <ul>
+                <li><a href="index.php" >Home</a></li>
+                <li><a href="add.php" >Add New Customer</a></li>
+                <li><a href="currentBirthdays.php" class="active">Current Months Birthdays</a></li>
+                <li><a href="download.php" >Download Contacts CSV</a></li>
+                <li><a href="download.php" >Upload Contacts CSV</a></li>
+                <li><a href="logout.php" >Logout</a></li>
+            </ul>
+            <div class="mainWrapper">
+                <h1><?php echo $_SESSION['user']; ?>'s Clients</h1>
+                <table style="width:100%;">
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Province</th>
+                        <th>Postal</th>
+                        <th>Birthday</th>
+                    </tr>
+                    <?php echo "$display_block"; ?>
+                </table>
+        </div>
 	</body>
 </html>

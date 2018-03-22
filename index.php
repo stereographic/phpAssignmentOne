@@ -51,7 +51,7 @@
     // $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") or die(mysqli_error($connection));
     // // reference to database
     // $db = @mysqli_select_db($connection, $db_name) or die(mysqli_error($connection));
-    
+
     $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday, user FROM $contact WHERE user='$username'";
 
     $result = @mysqli_query($connection, $sql) or die(mysqli_error($connection));
@@ -74,8 +74,8 @@
         }
         $display_block .= "<tr>
             <td>$fullname</td> <td>$phone</td> <td>$email</td> <td>$address</td> <td>$city</td> <td>$province</td> <td>$postal</td> <td>$birthday</td>
-            <td><form action='edit.php' target='_blank' ><input type='hidden' name='id' value='$id'><input type='submit' value='Edit'></form></td>
-            <td><form action='delete.php' target='_blank' ><input type='hidden' name='id' value='$id'><input type='submit' value='Delete'></form></td>
+            <td><form action='edit.php'><input type='hidden' name='id' value='$id'><input type='submit' value='Edit' class='edit'></form></td>
+            <td><form action='delete.php><input type='hidden' name='id' value='$id'><input type='submit' value='Delete' class='delete'></form></td>
         </tr>";
     }
     // ------------------------------------------------------------------------- closing database connection
@@ -86,29 +86,37 @@
 <html>
 	<head>
         <title><?php echo $_SESSION['user']; ?> Client Contact Information</title>
+        <link rel="stylesheet" type="text/css" href="styles/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Oswald" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/r-2.2.1/datatables.min.css"/>
 	</head>
 	<body>
     <ul>
-        <li><a href="index.php" target="_blank">Home</a></li>
-        <li><a href="add.php" target="_blank">Add New Customer</a></li>
-        <li><a href="currentBirthdays.php" target="_blank">Current Months Birthdays</a></li>
-        <li><a href="logout.php" target="_blank">Logout</a></li>
+        <li><a href="index.php" class="active">Home</a></li>
+        <li><a href="add.php" >Add New Customer</a></li>
+        <li><a href="currentBirthdays.php" >Current Months Birthdays</a></li>
+        <li><a href="download.php" >Download Contacts CSV</a></li>
+        <li><a href="download.php" >Upload Contacts CSV</a></li>
+        <li><a href="logout.php" >Logout</a></li>
     </ul>
-		<h1><?php echo $_SESSION['user']; ?>'s Clients</h1>
-        <table style="width:100%;">
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>Province</th>
-                <th>Postal</th>
-                <th>Birthday</th>
-                <th>Edit Contact</th>
-                <th>Delete Contact</th>
-            </tr>
-		    <?php echo "$display_block"; ?>
-        </table>
-	</body>
+        <div class="mainWrapper">
+            <h1><?php echo $_SESSION['user']; ?>'s Clients</h1>
+            <table id="table_id">
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Province</th>
+                    <th>Postal</th>
+                    <th>Birthday</th>
+                </tr>
+                <tbody>
+                    <?php echo "$display_block"; ?>
+                </tbody>
+            </table>
+        </div>
+
+    </body>
 </html>

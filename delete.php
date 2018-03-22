@@ -31,11 +31,24 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Client Contact Deletion</title>
+        <title>Client Contact Deletion</title>
+        <link rel="stylesheet" type="text/css" href="styles/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Oswald" rel="stylesheet">
 	</head>
 	<body>
+
+    <ul>
+        <li><a href="index.php" >Home</a></li>
+        <li><a href="add.php" >Add New Customer</a></li>
+        <li><a href="currentBirthdays.php" >Current Months Birthdays</a></li>
+        <li><a href="download.php" >Download Contacts CSV</a></li>
+        <li><a href="download.php" >Upload Contacts CSV</a></li>
+        <li><a href="logout.php" >Logout</a></li>
+    </ul>
+    <div class="mainWrapper">
         <h1>
 		    <?php echo "$display_block"; ?>
         </h1>
+    </div>
 	</body>
 </html>
