@@ -88,7 +88,11 @@
         <title><?php echo $_SESSION['user']; ?> Client Contact Information</title>
 	</head>
 	<body>
+    <ul>
+        <li><a href="add.php" target="_blank">Add New Customer</a></li>
+    </ul>
 		<h1><?php echo $_SESSION['user']; ?>'s Clients</h1>
+        <input type="submit" value="Add Contact" target>
         <table style="width:100%;">
             <tr>
                 <th>Name</th>
