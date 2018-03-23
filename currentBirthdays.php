@@ -16,11 +16,16 @@
     $display_block = "";
     $username = $_SESSION['user'];
     $currentMonth = date('m');
+    // allowing the admin to view all and users to view only their clients
+    if ($_SESSION['user'] == "admin"){
+        $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday, user FROM $contact WHERE birthday LIKE '_____$currentMonth%'";
 
-    $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday, user FROM $contact WHERE birthday LIKE '_____$currentMonth%' AND user='$username'";
+    } else {
+        $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday, user FROM $contact WHERE birthday LIKE '_____$currentMonth%' AND user='$username'";
 
+    }
     $result = @mysqli_query($connection, $sql) or die(mysqli_error($connection));
-    
+    // creating a table to display data
 	while ($row = mysqli_fetch_array($result)) {
         $id = $row['id'];
         $firstName = $row['firstName'];
@@ -60,6 +65,7 @@
                 <li><a href="currentBirthdays.php" class="active">Current Months Birthdays</a></li>
                 <li><a href="download.php" >Download Contacts CSV</a></li>
                 <li><a href="upload.php" >Upload Contacts CSV</a></li>
+                <li><a href="mail.php">Send Mass Email</a></li>
                 <li class="logout"><a href="logout.php" >Logout</a></li>
             </ul>
             <div class="mainWrapper">

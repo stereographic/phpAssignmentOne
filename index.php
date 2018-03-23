@@ -20,7 +20,6 @@
             // ------------------------------------------------------------------------- user verification
             $username = $_POST['username'];
             $password = $_POST['password'];
-        
             // getting salted hash
             $stmt = $connection->prepare("SELECT ukey FROM $login WHERE user=?");
             $stmt->bind_param("s",$username);
@@ -28,11 +27,10 @@
             $stmt->bind_result($ukey);
             $stmt->fetch();
             $stmt->close();
-        
-            // generating new users debugging
-            // echo password_hash('321',1);
+            
             //user1 = 123
             //user2 = 321
+            //admin = password
         
             // verifying login info
             if (password_verify($password,$ukey)) {
@@ -47,16 +45,15 @@
     $username = $_SESSION['user'];
     // ------------------------------------------------------------------------- displaying contact data
     $display_block = "";
-    // connecting to the database
-    //$connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) or die(mysqli_error($connection));
-    // $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") or die(mysqli_error($connection));
-    // // reference to database
-    // $db = @mysqli_select_db($connection, $db_name) or die(mysqli_error($connection));
+    // admin vs user checks
+    if ($_SESSION['user'] == "admin"){
+        $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday FROM $contact";
 
-    $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday, user FROM $contact WHERE user='$username'";
-
+    } else {
+        $sql = "SELECT id, firstName, lastName, phone, email, address, city, province, postal, birthday FROM $contact WHERE user='$username'";
+    }
+    // getting the results of the query and populating the table with data
     $result = @mysqli_query($connection, $sql) or die(mysqli_error($connection));
-    
 	while ($row = mysqli_fetch_array($result)) {
         $id = $row['id'];
         $firstName = $row['firstName'];
@@ -98,6 +95,7 @@
         <li><a href="currentBirthdays.php" >Current Months Birthdays</a></li>
         <li><a href="download.php" >Download Contacts CSV</a></li>
         <li><a href="upload.php" >Upload Contacts CSV</a></li>
+        <li><a href="mail.php">Send Mass Email</a></li>
         <li class="logout"><a href="logout.php" >Logout</a></li>
     </ul>
         <div class="mainWrapper">

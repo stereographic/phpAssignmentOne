@@ -9,17 +9,16 @@
 	$config = parse_ini_file('config.ini'); 
     $db_name = $config['DB_DATABASE'];    
     $contact = $config['DB_TABLE'];
-    
-    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) 
-    or die(mysql_error());
-
+    // connecting to the database
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) or die(mysql_error());
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());
-
+    // pulling the  ID from the query string
     $id = $_GET['id'];
+    // deleting record from the database
     $sql = "DELETE FROM $contact WHERE id='$id'";
 
     $displayblock = "";
-
+    // success message
     if (@mysqli_query($connection, $sql)) {
         $display_block = "Client Contact Information: Deletion Success";
     } else {
@@ -43,6 +42,7 @@
         <li><a href="currentBirthdays.php" >Current Months Birthdays</a></li>
         <li><a href="download.php" >Download Contacts CSV</a></li>
         <li><a href="upload.php" >Upload Contacts CSV</a></li>
+        <li><a href="mail.php">Send Mass Email</a></li>
         <li class="logout"><a href="logout.php" >Logout</a></li>
     </ul>
     <div class="mainWrapper">

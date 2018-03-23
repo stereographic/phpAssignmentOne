@@ -9,14 +9,12 @@
 	$config = parse_ini_file('config.ini'); 
     $db_name = $config['DB_DATABASE'];    
     $contact = $config['DB_TABLE'];
-    
-    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) 
-    or die(mysql_error());
-
+    // connecting to the database
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD'])  or die(mysql_error());
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());
 
     $display_block = "";
-
+    // checking if the request is post & pulling out information
     if($_SERVER['REQUEST_METHOD'] === 'POST'){ 
         $id = $_POST['id'];
         $firstName = $_POST['fName'];
@@ -28,7 +26,7 @@
         $province = $_POST['province'];
         $postal = $_POST['postal'];
         $birthday = $_POST['birthday'];
-
+        // updating contacts with prepared statements
         $stmt = $connection->prepare("UPDATE $contact SET firstName=?, lastName=?, phone=?, email=?, address=?, city=?, province=?, postal=?, birthday=? WHERE id=?");
         $stmt->bind_param("sssssssssi", $firstName, $lastName, $phone, $email, $address, $city, $province, $postal, $birthday, $id);
         $stmt->execute();
@@ -134,6 +132,7 @@
                 <li><a href="currentBirthdays.php" >Current Months Birthdays</a></li>
                 <li><a href="download.php" >Download Contacts CSV</a></li>
                 <li><a href="upload.php" >Upload Contacts CSV</a></li>
+                <li><a href="mail.php">Send Mass Email</a></li>
                 <li class="logout"><a href="logout.php" >Logout</a></li>
             </ul>
             <div class="mainWrapper">
