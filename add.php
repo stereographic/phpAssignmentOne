@@ -5,7 +5,7 @@
     $contact = $config['DB_TABLE'];
     
     // ------------------------------------------------------------------------- database connection
-    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") or die(mysql_error());
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) or die(mysql_error());
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());
 
     // prevents people from directly hitting the page

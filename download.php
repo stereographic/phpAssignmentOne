@@ -14,7 +14,7 @@
     $dlPath = "C:/wamp64/www/php/WEBD3000AddressBook/contacts/{$username}clients.csv";
     @unlink("contacts/{$username}clients.csv");
 
-    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") 
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) 
     or die(mysql_error());
 
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());

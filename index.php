@@ -5,9 +5,10 @@
     $db_name = $config['DB_DATABASE'];    
     $contact = $config['DB_TABLE'];
     $login = $config['DB_TABLELOGIN'];
+    $dbpassword = $config['DB_PASSWORD'];
     
     // ------------------------------------------------------------------------- database connection
-    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") or die(mysql_error());
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) or die(mysql_error());
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());
     
     // prevents people from directly hitting the page
@@ -74,8 +75,8 @@
         }
         $display_block .= "<tr>
             <td>$fullname</td> <td>$phone</td> <td>$email</td> <td>$address</td> <td>$city</td> <td>$province</td> <td>$postal</td> <td>$birthday</td>
-            <td><form action='edit.php'><input type='hidden' name='id' value='$id'><input type='submit' value='Edit' class='edit'></form></td>
-            <td><form action='delete.php><input type='hidden' name='id' value='$id'><input type='submit' value='Delete' class='delete'></form></td>
+            <td><form action='edit.php'><input type='hidden' name='id' value='$id'><input type='submit' value='Edit' class='edit'> </form></td>
+            <td><form action='delete.php'><input type='hidden' name='id' value='$id'><input type='submit' value='Delete' class='delete'> </form></td>
         </tr>";
     }
     // ------------------------------------------------------------------------- closing database connection

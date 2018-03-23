@@ -5,7 +5,7 @@
     $contact = $config['DB_TABLE'];
     
     // ------------------------------------------------------------------------- database connection
-    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") or die(mysql_error());
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) or die(mysql_error());
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());
 
     // prevents people from directly hitting the page
@@ -14,9 +14,8 @@
         exit;
     }
     $username = $_SESSION['user'];
-
+    $importCount = 0;
     if (isset($_POST["import"])) {
-
         $fileName = $_FILES["file"]["tmp_name"];
         $file = fopen($fileName, "r");
         while (($column = fgetcsv($file, ",")) !== FALSE) {
@@ -24,6 +23,7 @@
             $stmt->bind_param("ssssssssss",$column[0],$column[1],$column[2],$column[3],$column[4],$column[5],$column[6],$column[7],$column[8],$username);
             $stmt->execute();
             $stmt->close();
+            $importCount++;
         }
     }
     
@@ -48,13 +48,14 @@
         <li class="logout"><a href="logout.php" >Logout</a></li>
     </ul>
     <div class="mainWrapper">
-
+    <?php if($importCount >= 1){ echo "Successfully imported {$importCount} contacts";}?>
     <form action="" method="post" name="uploadCSV" enctype="multipart/form-data">
         <input type="file" name="file" id="file" accept=".csv">
-        <button type="submit" id="submit" name="import">Import</button>
+        <input type="submit" id="submit" name="import" value="Import">
     </form>
 
     </div>
 
 </body>
 </html>
+<?php $importCount = 0;?>

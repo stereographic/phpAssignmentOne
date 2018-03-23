@@ -10,7 +10,7 @@
     $db_name = $config['DB_DATABASE'];    
     $contact = $config['DB_TABLE'];
     
-    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], "") 
+    $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD']) 
     or die(mysql_error());
 
     $db = @mysqli_select_db($connection, $db_name) or die(mysql_error());

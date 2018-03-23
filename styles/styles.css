@@ -42,7 +42,12 @@ li a:hover {
 .mainWrapper {
     margin: 0 auto;
     width:80%;
-
+}
+.mainWrapperSmall {
+    padding-top: 150px;
+    text-align: center;
+    margin: 0 auto;
+    width:20%;
 }
 input {
 
@@ -97,6 +102,10 @@ tr:nth-child(even) {background-color: #c8d6e5;}
     margin: 4px 2px;
     cursor: pointer;
 }
+
 .logout {
     float: right;
+}
+button {
+    width: 100%;
 }
