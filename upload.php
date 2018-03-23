@@ -13,17 +13,30 @@
         header("Location: login.html");
         exit;
     }
+    // pulling the username out of the session data
     $username = $_SESSION['user'];
     $importCount = 0;
+    // if the import input is the source of the postback
     if (isset($_POST["import"])) {
+        // uploading and storing the file temporarily 
         $fileName = $_FILES["file"]["tmp_name"];
         $file = fopen($fileName, "r");
+        // looping through all records in the CSV
         while (($column = fgetcsv($file, ",")) !== FALSE) {
-            $stmt = $connection->prepare("INSERT INTO $contact (firstName, lastName, phone, email, address, city, province, postal, birthday, user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssss",$column[0],$column[1],$column[2],$column[3],$column[4],$column[5],$column[6],$column[7],$column[8],$username);
-            $stmt->execute();
-            $stmt->close();
-            $importCount++;
+            // admin imports follow a different format, this is to avoid users uploading contacts for other users while allowing the admin to upload for anyone
+            if ($_SESSION['user'] == "admin"){
+                $stmt = $connection->prepare("INSERT INTO $contact (firstName, lastName, phone, email, address, city, province, postal, birthday, user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssssssssss",$column[0],$column[1],$column[2],$column[3],$column[4],$column[5],$column[6],$column[7],$column[8],$username);
+                $stmt->execute();
+                $stmt->close();
+                $importCount++;
+            } else {
+                $stmt = $connection->prepare("INSERT INTO $contact (firstName, lastName, phone, email, address, city, province, postal, birthday, user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssssssssss",$column[0],$column[1],$column[2],$column[3],$column[4],$column[5],$column[6],$column[7],$column[8],$column[9]);
+                $stmt->execute();
+                $stmt->close();
+                $importCount++;
+            }
         }
     }
     
@@ -45,6 +58,7 @@
         <li><a href="currentBirthdays.php" >Current Months Birthdays</a></li>
         <li><a href="download.php" >Download Contacts CSV</a></li>
         <li><a href="upload.php" class="active">Upload Contacts CSV</a></li>
+        <li><a href="mail.php">Send Mass Email</a></li>
         <li class="logout"><a href="logout.php" >Logout</a></li>
     </ul>
     <div class="mainWrapper">

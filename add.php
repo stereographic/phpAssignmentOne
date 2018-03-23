@@ -15,7 +15,7 @@
     }
     //check if form was submitted
     if($_SERVER['REQUEST_METHOD'] === 'POST'){ 
-
+        // receiving the data from the postback
         $firstName = $_POST['fName'];
         $lastName = $_POST['lName'];
         $phone = $_POST['phone'];
@@ -26,15 +26,13 @@
         $postal = $_POST['postal'];
         $birthday = $_POST['birthday'];
         $username = $_SESSION['user'];
-
+        // uploading the user's contact data using prepared statements
         $stmt = $connection->prepare("INSERT INTO $contact (firstName, lastName, phone, email, address, city, province, postal, birthday, user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssssssss",$firstName,$lastName,$phone,$email,$address,$city,$province,$postal,$birthday,$username);
         $stmt->execute();
         $stmt->close();
-
-        $display_block = "Client Contact Information: Addition Success";
-
-        
+        // feedback message
+        $display_block = "Client Contact Information: Addition Success";        
     }    
     $connection->close();
 ?>
@@ -53,6 +51,7 @@
             <li><a href="currentBirthdays.php" >Current Months Birthdays</a></li>
             <li><a href="download.php" >Download Contacts CSV</a></li>
             <li><a href="upload.php" >Upload Contacts CSV</a></li>
+            <li><a href="mail.php">Send Mass Email</a></li>
             <li class="logout"><a href="logout.php" >Logout</a></li>
         </ul>
         <div class="mainWrapper">
